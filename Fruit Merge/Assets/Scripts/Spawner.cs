@@ -6,6 +6,8 @@ public class Spawner : MonoBehaviour
 {
     public List<GameObject> fruitPrefabs;
     Rigidbody2D rb;
+    public float minX = -3f;
+    public float maxX = 3f;
 
     void Start()
     {
@@ -15,19 +17,23 @@ public class Spawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Vector2 mousePosition = Input.mousePosition;
-        Vector2 worldPosition = Camera.main.ScreenToWorldPoint(mousePosition);
-        SpawnFruit();
+        if (Input.GetKeyDown(KeyCode.Mouse0))
+        {
+            
+            SpawnFruit();
+        }
+        
     }
 
     void SpawnFruit()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse0))
-        {
+        Vector3 mousePosition = Input.mousePosition;
+        mousePosition.z = 5f; 
+        Vector3 worldPosition = Camera.main.ScreenToWorldPoint(mousePosition);
+        worldPosition.y = 3f;
+        worldPosition.x = Mathf.Clamp(worldPosition.x, minX, maxX);
+        print(worldPosition);
+        var randomFruitSpawn = Instantiate(fruitPrefabs[Random.Range(0, fruitPrefabs.Count)],worldPosition, Quaternion.identity);
             
-            var randomFruitSpawn = Instantiate(fruitPrefabs[Random.Range(0, fruitPrefabs.Count)],transform.position, Quaternion.identity);
-            
-
-        }
     }
 }
